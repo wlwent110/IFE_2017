@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css">
+
+    <style>
+       [class*=col-]{
+            height: 50px;
+            background-color: #eee;
+           margin-left:20px;
+            border: 1px solid #999;
+           padding: 0;
+         box-sizing: border-box;
+
+        }
+        .container{
+            margin: 0;
+        }
+       .col-xs-6{
+           width: calc(50% - 20px);
+       }
+       .col-xs-12{
+           width: calc(100% - 20px);
+       }
+       .col-xs-3{
+           width: calc(25% - 20px);
+       }
+       .col-xs-2,.col-sm-2{
+           width: calc(100%/6 - 20px);
+       }
+       .col-xs-8{
+           width: calc(100%/3*2 - 20px);
+       }
+       @media (min-width: 768px){
+           .col-sm-4{
+               width: calc(100%/3 - 20px);
+           }
+           .col-sm-6{
+               width: calc(50% - 20px);
+           }
+           .col-sm-2{
+               width: calc(100%/6 - 20px);
+           }
+           .col-sm-1{
+               width: calc(100%/12 - 20px);
+           }
+       }
+
+
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4 col-xs-6"></div>
+        <div class="col-sm-4 col-xs-6"></div>
+        <div class="col-sm-4 col-xs-12"></div>
+       </div>
+    <div class="row">
+        <div class="col-xs-3"></div>
+        <div class="col-xs-6"></div>
+        <div class="col-xs-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1 col-xs-2"></div>
+        <div class="col-sm-1 col-xs-2"></div>
+        <div class="col-sm-2 col-xs-8"></div>
+        <div class="col-sm-2 col-xs-3"></div>
+        <div class="col-sm-6 col-xs-3"></div>
+    </div>
+</div>
+
+</body>
+</html>
