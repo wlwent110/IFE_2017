@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    div{
+        border: 1px solid rgba(0, 0, 0, 0.18);
+
+        padding: 5px;
+        margin: 5px;
+        background-color: #fff;
+        overflow: hidden;
+
+    }
+.father {
+    float: left;
+
+
+}
+
+
+.father div{
+    float: left;
+    position: relative;
+}
+    .active{
+        position: absolute;
+        top: 200px;
+        left: 300px;
+    }
+</style>
+<body>
+<div class="father">Super
+    <div >Car
+        <div>Apple
+            <div>Poor</div>
+            <div>Pig</div>
+            <div>Colo</div>
+            <div>Soccer</div>
+        </div>
+        <div>Phone</div>
+        <div>
+            <div>Book</div>
+            <div>School</div>
+        </div>
+    </div>
+    <div >Note
+        <div>Human
+            <div>Code</div>
+            <div>Operote</div>
+            <div>Man</div>
+        </div>
+        <div>
+            <div>Bement
+            <div>Cat</div>
+            </div>
+            <div>Glass</div></div>
+    </div>
+    <div>Fish</div>
+</div>
+<div class="active">
+    <button>开始遍历</button>
+    <input type="text">
+    <button>查询</button>
+</div>
+
+<script>
+    var father=document.querySelector('.father');
+    var input=document.querySelector('input');
+    var target;
+    document.onclick=function (e) {
+        var e=e.target;
+
+        if(e.tagName=='BUTTON'){
+           if(target){
+               target.style.backgroundColor = '#fff';
+               target=null;
+           }
+            if(e.innerText=='开始遍历'){
+
+                traverse(father);
+            }
+           if(e.innerText=='查询'){
+                if(input.value){
+                    setInterval(function () {
+                        if(item==itemOld){
+                            alert('没找到');
+                        }
+                        itemOld=item;
+                    },1000)
+                    traverse(father, input.value);
+                }else{
+                    alert('请在输入框输入内容');
+                }
+
+               if(target){
+                   target.style.backgroundColor = '#fff';
+                   target=null;
+               }
+
+           }
+
+           }
+        }
+
+    function traverse(ele,text) {
+
+
+        if (hasText(ele) == text) {
+            ele.style.backgroundColor = '#ff3b19';
+            target=ele;
+            alert('已找到')
+            text = null;
+        } else {
+
+            ele.style.backgroundColor = '#2e4ae6';
+            if (ele.children.length > 0) {
+
+                setTimeout(function () {
+                    for (var i = 0, len1 = ele.children.length; i < len1; i++) {
+                        ele.style.backgroundColor = '#fff'
+                        ele.children[i].style.backgroundColor = '#2e4ae6'
+                        traverse(ele.children[i],text);
+                    }
+
+
+                }, 1000)
+
+            } else {
+                setTimeout(function () {
+                    ele.style.backgroundColor = '#fff';
+
+
+                }, 1000)
+
+            }
+
+
+        }
+
+    }
+    function hasText(e) {
+        if(e.children){
+            return e.firstChild.nodeValue.replace(/\s/g,'');
+        }else {
+          return  e.innerText;
+        }
+    }
+
+
+</script>
+</body>
+</html>
