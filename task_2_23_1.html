@@ -14,18 +14,16 @@
         overflow: hidden;
 
     }
-.father {
-    float: left;
 
 
-}
 
+div{
 
-.father div{
-    float: left;
-    position: relative;
+    display:inline-flex;
+
 }
     .active{
+        display: block;
         position: absolute;
         top: 200px;
         left: 300px;
@@ -65,91 +63,100 @@
     <input type="text">
     <button>查询</button>
 </div>
-
 <script>
+    console.log('作为一个大龄工控狗，学习前端一直是断断续续，因为要出差调试。在想转行时也在被质疑专业跨度太大，这个是我最后的作业，' +
+        '我只想对导师说一声，你们辛苦了，我还是去转向学习C#，做工控的上位机软件，相对来说跨度并不是太大，转行也好转一点。' +
+        '毕竟要生活，只怪自己年轻的时候不努力，太容易满足了。')
     var father=document.querySelector('.father');
     var input=document.querySelector('input');
+    var tree=[];
+    var j=0;
+    var a=0;
     var target;
-    document.onclick=function (e) {
-        var e=e.target;
+        function traverse(ele,Tree) {
 
-        if(e.tagName=='BUTTON'){
-           if(target){
-               target.style.backgroundColor = '#fff';
-               target=null;
-           }
-            if(e.innerText=='开始遍历'){
-
-                traverse(father);
-            }
-           if(e.innerText=='查询'){
-                if(input.value){
-                    setInterval(function () {
-                        if(item==itemOld){
-                            alert('没找到');
-                        }
-                        itemOld=item;
-                    },1000)
-                    traverse(father, input.value);
-                }else{
-                    alert('请在输入框输入内容');
-                }
-
-               if(target){
-                   target.style.backgroundColor = '#fff';
-                   target=null;
+           Tree[j]=ele;
+            ++j;
+            if(ele.children.length>0){
+               for(var i=0,len=ele.children.length;i<len;i++){
+                   Tree[j]=ele.children[i]
+                   traverse(ele.children[i],Tree);
                }
-
-           }
-
-           }
+            }
         }
+    traverse(father,tree);
 
-    function traverse(ele,text) {
 
-
-        if (hasText(ele) == text) {
-            ele.style.backgroundColor = '#ff3b19';
-            target=ele;
-            alert('已找到')
-            text = null;
-        } else {
-
-            ele.style.backgroundColor = '#2e4ae6';
-            if (ele.children.length > 0) {
-
-                setTimeout(function () {
-                    for (var i = 0, len1 = ele.children.length; i < len1; i++) {
-                        ele.style.backgroundColor = '#fff'
-                        ele.children[i].style.backgroundColor = '#2e4ae6'
-                        traverse(ele.children[i],text);
+        document.onclick=function (e) {
+            var e=e.target;
+            if(e.tagName=='BUTTON'){
+                if(target){
+                    target.style.backgroundColor = '#fff';
+                    target=null;
+                }
+                if(e.innerText=='开始遍历'){
+                    doIt();
+                }
+                    if(e.innerText=='查询'){
+                        doIt(input.value);
                     }
-
-
-                }, 1000)
-
-            } else {
-                setTimeout(function () {
-                    ele.style.backgroundColor = '#fff';
-
-
-                }, 1000)
-
+                }
             }
 
 
-        }
 
-    }
+
     function hasText(e) {
         if(e.children){
             return e.firstChild.nodeValue.replace(/\s/g,'');
         }else {
-          return  e.innerText;
+            return  e.innerText;
+        }
+    }
+    function doIt(text) {
+
+    ++a;
+    if(hasText(tree[a-1])== text){
+        target=tree[a-1];
+        tree[a-1].style.backgroundColor='#e61a4d';
+        alert('找到了');
+        a=0;
+
+        text=null;
+    }
+    if(hasText(tree[a]==text)){
+        target=tree[a];
+        tree[a].style.backgroundColor='#e61a4d';
+        alert('找到了');
+        a=0;
+
+        text=null;
+    }
+    if(a!==0){
+        if(tree[a]){
+            tree[a-1].style.backgroundColor='#2e4ae6';
+            setTimeout(function () {
+                tree[a-1].style.backgroundColor='#fff';
+                doIt(text);
+            },500)
+        }else {
+            tree[a-1].style.backgroundColor='#2e4ae6';
+            setTimeout(function () {
+                tree[a-1].style.backgroundColor='#fff';
+                if(text){
+                    if(hasText(tree[a-1])!== text){
+                        alert('未找到');
+                    }
+                }
+
+                a=0;
+            },500)
         }
     }
 
 
+    }
 </script>
+
 </body>
 </html>
