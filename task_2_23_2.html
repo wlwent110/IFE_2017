@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    div{
+        border: 1px solid rgba(0, 0, 0, 0.18);
+
+        padding: 5px;
+        margin: 5px;
+        background-color: #fff;
+        overflow: hidden;
+
+    }
+
+
+
+div{
+
+    display:inline-flex;
+
+}
+    .active{
+        display: block;
+        position: absolute;
+        top: 200px;
+        left: 300px;
+    }
+    #selected{
+        background-color: #0ed227;
+    }
+    .blue{
+        background-color: #2e4ae6;
+
+    }
+    .red{
+
+        background-color: #e61a4d;
+    }
+    .inputDefault{
+        color: rgba(0, 0, 0, 0.33);
+    }
+
+</style>
+<body>
+<div class="father">Super
+    <div >Car
+        <div>Apple
+            <div>Poor</div>
+            <div>Pig</div>
+            <div>Colo</div>
+            <div>Soccer</div>
+        </div>
+        <div>Phone</div>
+        <div>
+            <div>Book</div>
+            <div>School</div>
+        </div>
+    </div>
+    <div >Note
+        <div>Human
+            <div>Code</div>
+            <div>Operote</div>
+            <div>Man</div>
+        </div>
+        <div>
+            <div>Bement
+            <div>Cat</div>
+            </div>
+            <div>Glass</div></div>
+    </div>
+    <div>Fish</div>
+</div>
+<br class="active">
+    <button>开始遍历</button></br>
+    <input type="text" value="请输入节点名" class="inputDefault">
+    <button>查询</button></br>
+<button>删除</button></br>
+<input type="text"  value="请输入节点名" class="inputDefault">
+<button>增加</button>
+</div>
+<script>
+
+    var father=document.querySelector('.father');
+    var input=document.querySelectorAll('input');
+    var tree=[];
+    var j=0;
+    var a=0;
+    var target;
+
+    //遍历当前元素里面的所有节点，并存储在一个数组中。
+        function traverse(ele,Tree) {
+
+           Tree[j]=ele;
+            ++j;
+            if(ele.children.length>0){
+               for(var i=0,len=ele.children.length;i<len;i++){
+                   Tree[j]=ele.children[i]
+                   traverse(ele.children[i],Tree);
+               }
+            }
+        }
+
+
+
+        document.onclick=function (e) {
+            var e=e.target;
+            var selEle=document.getElementById('selected');
+            if(e.tagName=='BUTTON'){
+                if(target){
+                    target.style.backgroundColor = '#fff';
+                    target=null;
+                }
+                //遍历或查询时，将选中的元素移除class，重新遍历元素里面的子节点
+                    if((e.innerText=='开始遍历')||(e.innerText=='查询')){
+                    tree=[];
+                        traverse(father,tree);
+                    if(selEle){
+                        selEle.id='';
+                    }
+                    }
+                if(e.innerText=='开始遍历'){
+                    doIt();
+                }
+                    if(e.innerText=='查询'){
+                        doIt(input[0].value);
+                    }
+                    if(e.innerText=='增加'){
+
+                        if(selEle){
+                            if(input[1].value){
+                                creatChild(selEle,input[1].value);
+                            }else {
+                                alert('请输入节点名');
+                            }
+                        }else{
+                            alert('请选中节点');
+                        }
+                    }
+                    if(e.innerText=='删除'){
+
+                       if(selEle){
+                           selEle.parentNode.removeChild(selEle);
+                       }else {
+                           alert('请点击要删除的节点');
+                       }
+
+                    }
+                }
+                //选中节点
+                if(e.tagName=='DIV'){
+                if(document.getElementById('selected')){
+                    document.getElementById('selected').id='';
+                }
+                    e.id='selected';
+                }
+
+            }
+            //循环注册事件，达到输入框失去焦点和获得焦点时，文字的改变
+    for(var i=0;i<input.length;i++){
+        (function (i) {
+            input[i].onblur=function (e) {
+                if(e.target.value==''){
+                    e.target.value='请输入节点名'
+                    e.target.className='inputDefault';
+                }
+
+            }
+            input[i].onfocus=function (e) {
+                document.onkeydown=function (e) {
+                    if(e.target.value=='请输入节点名'){
+                        e.target.value=''
+                        e.target.className='';
+                    }
+                }
+            }
+        })(i)
+    }
+
+//向选中的节点增加子节点
+function creatChild(parentEle,text) {
+        var textNode=document.createElement('div');
+        var Text=document.createTextNode(text);
+    textNode.appendChild(Text);
+    parentEle.appendChild(textNode);
+}
+
+//判断当前节点的文字节点 并返回里面的Text
+    function hasText(e) {
+        if(e.children){
+            return e.firstChild.nodeValue.replace(/\s/g,'');
+        }else {
+            return  e.innerText;
+        }
+    }
+    //遍历当前节点里面的元素
+    function doIt(text) {
+
+    ++a;
+    if(hasText(tree[a-1])== text){
+        target=tree[a-1];
+        tree[a-1].className='red';
+        alert('找到了');
+        a=0;
+
+        text=null;
+    }
+    if(hasText(tree[a]==text)){
+        target=tree[a];
+        tree[a].className='red';
+        alert('找到了');
+        a=0;
+
+        text=null;
+    }
+    if(a!==0){
+        if(tree[a]){
+            tree[a-1].className='blue';
+            setTimeout(function () {
+                tree[a-1].className='';
+                doIt(text);
+            },500)
+        }else {
+            tree[a-1].className='blue';
+            setTimeout(function () {
+                tree[a-1].className='';
+                if(text){
+                    if(hasText(tree[a-1])!== text){
+                        alert('未找到');
+                    }
+                }
+
+                a=0;
+            },500)
+        }
+    }
+
+
+    }
+</script>
+
+</body>
+</html>

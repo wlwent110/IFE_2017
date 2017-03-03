@@ -64,15 +64,14 @@ div{
     <button>查询</button>
 </div>
 <script>
-    console.log('作为一个大龄工控狗，学习前端一直是断断续续，因为要出差调试。在想转行时也在被质疑专业跨度太大，这个是我最后的作业，' +
-        '我只想对导师说一声，你们辛苦了，我还是去转向学习C#，做工控的上位机软件，相对来说跨度并不是太大，转行也好转一点。' +
-        '毕竟要生活，只怪自己年轻的时候不努力，太容易满足了。')
+
     var father=document.querySelector('.father');
     var input=document.querySelector('input');
     var tree=[];
     var j=0;
     var a=0;
     var target;
+    //遍历当前元素里面的所有节点，并存储在一个数组中。
         function traverse(ele,Tree) {
 
            Tree[j]=ele;
@@ -105,7 +104,7 @@ div{
 
 
 
-
+    //判断当前节点的文字节点 并返回里面的Text
     function hasText(e) {
         if(e.children){
             return e.firstChild.nodeValue.replace(/\s/g,'');
@@ -113,6 +112,7 @@ div{
             return  e.innerText;
         }
     }
+    //遍历当前节点里面的元素
     function doIt(text) {
 
     ++a;
