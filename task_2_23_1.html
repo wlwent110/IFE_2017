@@ -64,7 +64,7 @@ div{
     <button>查询</button>
 </div>
 <script>
-
+console.log("任务八很简陋，还是直接看我的任务九吧，增加了多次查找以及重复点击清除定时器的功能,我的task_2_23_2就是任务九");
     var father=document.querySelector('.father');
     var input=document.querySelector('input');
     var tree=[];
@@ -104,7 +104,7 @@ div{
 
 
 
-    //判断当前节点的文字节点 并返回里面的Text
+//提取当前元素的nodeText
     function hasText(e) {
         if(e.children){
             return e.firstChild.nodeValue.replace(/\s/g,'');
@@ -112,7 +112,8 @@ div{
             return  e.innerText;
         }
     }
-    //遍历当前节点里面的元素
+
+    //根据text的存在来确定是查询还是遍历，
     function doIt(text) {
 
     ++a;

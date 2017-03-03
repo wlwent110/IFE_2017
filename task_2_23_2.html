@@ -88,7 +88,8 @@ div{
     var tree=[];
     var j=0;
     var a=0;
-    var target;
+    var target=0;
+    var t;
 
     //遍历当前元素里面的所有节点，并存储在一个数组中。
         function traverse(ele,Tree) {
@@ -108,13 +109,30 @@ div{
         document.onclick=function (e) {
             var e=e.target;
             var selEle=document.getElementById('selected');
+            var redFind=document.getElementsByClassName('red');
+            var blueTr=document.getElementsByClassName('blue');
             if(e.tagName=='BUTTON'){
-                if(target){
-                    target.style.backgroundColor = '#fff';
-                    target=null;
+
+                if(redFind){
+                    for(var i=0,len=redFind.length;i<len;i++){
+                        redFind[0].className='';
+                    }
                 }
                 //遍历或查询时，将选中的元素移除class，重新遍历元素里面的子节点
                     if((e.innerText=='开始遍历')||(e.innerText=='查询')){
+                    clearTimeout(t);
+                        if(redFind){
+                            for(var i=0,len=redFind.length;i<len;i++){
+                                redFind[0].className='';
+                            }
+                        }
+                        if(blueTr){
+                            for(var i=0,len=blueTr.length;i<len;i++){
+                                blueTr[0].className='';
+                            }
+                        }
+                        j=0;
+                    a=0;
                     tree=[];
                         traverse(father,tree);
                     if(selEle){
@@ -126,6 +144,7 @@ div{
                 }
                     if(e.innerText=='查询'){
                         doIt(input[0].value);
+                        input[0].value='';
                     }
                     if(e.innerText=='增加'){
 
@@ -195,47 +214,41 @@ function creatChild(parentEle,text) {
             return  e.innerText;
         }
     }
-    //遍历当前节点里面的元素
+    /*遍历当前节点里面的元素
+    以tree[a-1]存在与否来判断是否遍历完毕，以text有没有值判断是遍历还是查询，通过添加class来进行样式的转变*/
     function doIt(text) {
 
     ++a;
-    if(hasText(tree[a-1])== text){
-        target=tree[a-1];
-        tree[a-1].className='red';
-        alert('找到了');
-        a=0;
+    if(tree[a-1]) {
+        if (hasText(tree[a - 1]) == text) {
+            ++target;
+            tree[a - 1].className = 'red';
 
-        text=null;
-    }
-    if(hasText(tree[a]==text)){
-        target=tree[a];
-        tree[a].className='red';
-        alert('找到了');
-        a=0;
+        }
+        if (tree[a - 1].className != 'red') {
+            tree[a - 1].className = 'blue';
 
-        text=null;
-    }
-    if(a!==0){
-        if(tree[a]){
-            tree[a-1].className='blue';
-            setTimeout(function () {
-                tree[a-1].className='';
-                doIt(text);
-            },500)
-        }else {
-            tree[a-1].className='blue';
-            setTimeout(function () {
-                tree[a-1].className='';
-                if(text){
-                    if(hasText(tree[a-1])!== text){
-                        alert('未找到');
-                    }
+
+        }
+       t= setTimeout(function () {
+                if((target==0)||(tree[a - 1].className = 'blue')){
+                    tree[a - 1].className = '';
                 }
 
-                a=0;
-            },500)
+            doIt(text);
+        }, 500)
+
+    } else {
+        if(text){
+            target!=0? alert('一共找到'+target+'个'):alert('未找到');
+
+            target=0;
         }
+
     }
+
+
+
 
 
     }
