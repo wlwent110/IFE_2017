@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        ul>li{
+            padding-left: 10px;
+        }
+        ul{
+            list-style: none;
+            float: left;
+
+        }
+        li {
+
+            margin-bottom: 10px;
+        }
+        input{
+            border: 1px solid #C3CED9;
+            border-radius: 10px;
+            outline:none;
+            height: 31px;
+            line-height: 31px;
+            width: 310px;
+
+
+
+        }
+        .tips{
+            padding-left: 90px;
+            display: block;
+            color: #ddd;
+            font-size:14px;
+        }
+        .success{
+            padding-left:90px;
+            display: block;
+            color: #0ed227;
+        }
+        .error{
+            padding-left:90px;
+            display: block;
+            color: #e61519;
+        }
+        input:focus{
+            box-shadow: 0 0 1px 1px #0eb5cd;
+
+        }
+        label{
+            display: inline-block;
+            width: 80px;
+            margin-left: 10px;
+            text-align: right;
+        }
+       li button{
+           outline: none;
+            float: right;
+            width: 70px;
+           font-size: large;
+            padding: 10px;
+            background-color: rgba(12, 145, 255, 0.67);
+            border: 1px solid rgba(12, 145, 255, 0.83);
+            border-radius: 15px;
+        }
+        button:hover{
+            background-color: #0C91FF;
+        }
+    </style>
+</head>
+<body>
+<ul class="form">
+    <li><label for="name">名称：</label><input id="name" type="text"> <span ></span></li>
+
+    <li><label for="password">密码：</label><input id="password" type="password"><span ></span></li></li>
+    <li><label for="confirmation">密码确认：</label><input id="confirmation" type="password"><span ></span></li></li>
+    <li><label for="email">邮箱：</label><input  id="email" type="text"><span ></span></li></li>
+    <li><label for="phoneNum">手机：</label><input id="phoneNum" type="text"><span ></span></li></li>
+    <li><button>提交</button></li>
+</ul>
+
+<script>
+    var arrInfo=['必填，长度为4-16的字符，中文、英文','必填，以字母开头长度为6-20个数字或字母','请再输入一次密码','请输入邮箱地址','请输入手机号'];
+    var arrSucess=['用户名格式正确','密码格式正确','密码一致','有效的邮箱地址','有效的手机号'];
+    var arrError=['用户名格式错误','密码格式错误','两次密码不一致','无效的邮箱地址','无效的手机号'];
+    var pwd=document.getElementById('password');
+    var btn=document.querySelector('button');
+ var checkName=   function (text,ele,i) {
+        var len=text.match(/[\u0391-\uFFE5]/g)==null?0:text.match(/[\u0391-\uFFE5]/g).length*2;
+        var flag=false;
+      var  textNew=text.replace(/[\u0391-\uFFE5]/g,'');
+      var arr=textNew.match(/[a-zA-Z]/g);
+    var len2= arr==null?0:arr.length;
+        if(len2==textNew.length){
+           var len1=textNew.length+len;
+           if(len1>=4&&len1<=16){
+
+               flag=true;
+           }
+        }
+        if(flag){
+           ele.className='success';
+            flag=false;
+            ele.innerText=arrSucess[i];
+        }else {
+            ele.className='error';
+            ele.innerText=arrError[i];
+        }
+    };
+
+var checkPWD=function (text,ele,i) {
+
+
+if((/^[a-z A-Z][0-9 a-z A-Z]{5,19}$/g).test(text)){
+    ele.className='success';
+    flag=false;
+    ele.innerText=arrSucess[i];
+}else {
+    ele.className='error';
+    ele.innerText=arrError[i];
+}
+
+
+
+};
+var checkPWDAgain =function (text,ele,i) {
+
+        if((text!='')&&(pwd.value==text)){
+            ele.className='success';
+            ele.innerText=arrSucess[i];
+        }else {
+            ele.className='error';
+            ele.innerText=arrError[i];
+        }
+
+
+};
+      var checkEmail= function (text,ele,i) {
+    var reg =new RegExp(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z]+)+/g);
+    if (reg.test(text)){
+        ele.className='success';
+        ele.innerText=arrSucess[i];
+    }else {
+        ele.className='error';
+        ele.innerText=arrError[i];
+    }
+
+        };
+      var checkPhone=  function (text,ele,i) {
+            var reg =new RegExp(/^1[3|4|5|8][0-9]\d{8}$/) ;
+            if (reg.test(text)) {
+                ele.className='success';
+                ele.innerText=arrSucess[i];
+            } else {
+                ele.className='error';
+                ele.innerText=arrError[i];
+            }
+        };
+      var arrMethod=[checkName,checkPWD,checkPWDAgain,checkEmail,checkPhone];
+
+      var inputList=  document.getElementsByTagName('input');
+    var spanList=document.getElementsByTagName('span')
+
+    for(var i=0;i<inputList.length;i++){
+        (function (i) {
+
+            inputList[i].onfocus=function () {
+
+                spanList[i].className='tips';
+                spanList[i].innerText=arrInfo[i];
+            }
+        })(i);
+        (function(i) {
+
+            inputList[i].onblur=function () {
+
+                arrMethod[i](inputList[i].value,spanList[i],i);
+
+            }
+        })(i);
+    }
+btn.onclick=function () {
+
+    for(var i=0;i<inputList.length;i++){
+        (function (i) {
+            arrMethod[i](inputList[i].value,spanList[i],i);
+        })(i);
+    }
+    if(document.querySelectorAll('.error').lenght==0){
+        alert('提交成功');
+    }else {
+        alert('提交失败');
+    }
+}
+
+</script>
+</body>
+</html>
